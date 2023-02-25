@@ -1,3 +1,18 @@
+/*
+* This file is part of RetroScaler.
+*
+* RetroScaler is free software : you can redistribute itand /or modify it under the terms of
+* the GNU General Public License as published by the Free Software Foundation, either version 2
+* of the License, or (at your option) any later version.
+*
+* RetroScaler is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+* without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+* See the GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* RetroScaler.If not, see < https://www.gnu.org/licenses/>.
+*/
+
 module;
 
 #include <Unknwn.h>
@@ -17,14 +32,6 @@ export namespace Direct3D11Interop
         winrt::check_hresult(CreateDirect3D11DeviceFromDXGIDevice(dxgi_device, d3dDevice.put()));
 
         return d3dDevice.as<winrt::Windows::Graphics::DirectX::Direct3D11::IDirect3DDevice>();
-    }
-
-    auto CreateDirect3DSurface(IDXGISurface* dxgiSurface)
-    {
-        winrt::com_ptr<::IInspectable> d3d_surface;
-        winrt::check_hresult(CreateDirect3D11SurfaceFromDXGISurface(dxgiSurface, d3d_surface.put()));
-
-        return d3d_surface.as<winrt::Windows::Graphics::DirectX::Direct3D11::IDirect3DSurface>();
     }
     
     template <typename T>

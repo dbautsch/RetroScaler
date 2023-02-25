@@ -53,9 +53,6 @@
     <ClCompile Include="WindowSelectorDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScreenGrab11.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Direct3D11.ixx">
       <Filter>DirectX</Filter>
     </ClCompile>
@@ -86,9 +83,6 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ScreenGrab11.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="D3D11QImageWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>

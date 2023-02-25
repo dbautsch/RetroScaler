@@ -33,7 +33,7 @@ class RetroScaler : public QMainWindow
     Q_OBJECT
 
 public:
-    RetroScaler(QWidget *parent = nullptr);
+    explicit RetroScaler(QWidget *parent = nullptr);
     ~RetroScaler();
 
 private:

@@ -29,7 +29,7 @@ class QImageDrawer : public QWidget
 	Q_OBJECT
 
 public:
-	QImageDrawer(QWidget *parent = nullptr);
+	explicit QImageDrawer(QWidget *parent = nullptr);
 	~QImageDrawer();
 
 	void SetQImageWrapper(D3D11QImageWrapper imageWrapper);

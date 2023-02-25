@@ -62,7 +62,7 @@ private:
 
 	static BOOL CALLBACK EnumWindowProc(HWND hwnd, LPARAM lparam)
 	{
-		WindowEnumerator* _this = reinterpret_cast<WindowEnumerator*>(lparam);
+		WindowEnumerator* _this{ reinterpret_cast<WindowEnumerator*>(lparam) };
 
 		if (_this == nullptr)
 		{

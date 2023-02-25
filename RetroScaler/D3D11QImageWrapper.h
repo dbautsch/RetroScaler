@@ -47,7 +47,7 @@ private:
 
 	void ConstructQImageFromScratch()
 	{
-		const uchar* memory = static_cast<const uchar*>(scratchImage.GetPixels());
+		const uchar* memory{ static_cast<const uchar*>(scratchImage.GetPixels()) };
 		constructedQImage = QImage(memory,
 			scratchImage.GetMetadata().width,
 			scratchImage.GetMetadata().height,

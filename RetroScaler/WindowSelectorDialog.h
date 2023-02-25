@@ -27,7 +27,7 @@ class WindowSelectorDialog : public QDialog
 	Q_OBJECT
 
 public:
-	WindowSelectorDialog(
+	explicit WindowSelectorDialog(
 		WindowEnumerator & theWindowEnumerator,
 		QWidget *parent = nullptr);
 	~WindowSelectorDialog();

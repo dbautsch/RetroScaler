@@ -76,14 +76,14 @@ void DirectX11WindowCapture::StartCapture(HWND hwnd)
 {
 	windowToCapture = hwnd;
 
-	auto interopFactory = winrt::get_activation_factory<winrt::Windows::Graphics::Capture::GraphicsCaptureItem, IGraphicsCaptureItemInterop>();
+	auto interopFactory{ winrt::get_activation_factory<winrt::Windows::Graphics::Capture::GraphicsCaptureItem, IGraphicsCaptureItemInterop>() };
 	
 	winrt::check_hresult(interopFactory->CreateForWindow(windowToCapture,
 		winrt::guid_of<ABI::Windows::Graphics::Capture::IGraphicsCaptureItem>(), winrt::put_abi(captureItem)));
 
-	const auto myPixelFormat = winrt::Windows::Graphics::DirectX::DirectXPixelFormat::B8G8R8A8UIntNormalized;
-	const auto myDXGIDevice = d3d11Device.as<IDXGIDevice>();
-	const auto myDevice = Direct3D11Interop::CreateDirect3DDevice(myDXGIDevice.get());
+	const auto myPixelFormat{ winrt::Windows::Graphics::DirectX::DirectXPixelFormat::B8G8R8A8UIntNormalized };
+	const auto myDXGIDevice{ d3d11Device.as<IDXGIDevice>() };
+	const auto myDevice { Direct3D11Interop::CreateDirect3DDevice(myDXGIDevice.get()) };
 	
 	framesPool = winrt::Windows::Graphics::Capture::Direct3D11CaptureFramePool::CreateFreeThreaded(
 		myDevice, myPixelFormat, 2, captureItem.Size()
@@ -97,17 +97,17 @@ void DirectX11WindowCapture::OnNewFrameCaptured(
 	winrt::Windows::Graphics::Capture::Direct3D11CaptureFramePool const & sender,
 	winrt::Windows::Foundation::IInspectable const&)
 {
-	auto frame = sender.TryGetNextFrame();
-	auto texture = Direct3D11Interop::GetDXGIInterfaceFromObject<ID3D11Texture2D>(frame.Surface());
+	auto frame{ sender.TryGetNextFrame() };
+	auto texture{ Direct3D11Interop::GetDXGIInterfaceFromObject<ID3D11Texture2D>(frame.Surface()) };
 
 	winrt::com_ptr<ID3D11DeviceContext> immediateContext{ nullptr };
 	d3d11Device->GetImmediateContext(immediateContext.put());
 
-	D3D11_TEXTURE2D_DESC desc = {};
+	D3D11_TEXTURE2D_DESC desc {};
 	winrt::com_ptr<ID3D11Texture2D> pStaging;
 	DirectX::ScratchImage image;
-	HRESULT hr = DirectX::CaptureTexture(d3d11Device.get(), immediateContext.get(),
-		texture.get(), image);
+	HRESULT hr{ DirectX::CaptureTexture(d3d11Device.get(), immediateContext.get(),
+		texture.get(), image) };
 
 	if (FAILED(hr))
 	{

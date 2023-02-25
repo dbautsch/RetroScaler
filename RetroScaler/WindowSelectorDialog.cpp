@@ -61,9 +61,9 @@ void WindowSelectorDialog::OnRefresh()
 	windowEnumerator.RefreshList();
 	ui.listWidget->clear();
 
-	for (size_t index = 0; index < windowEnumerator.GetWindowCount(); ++index)
+	for (size_t index{ 0 }; index < windowEnumerator.GetWindowCount(); ++index)
 	{
-		const auto& windowTitle = windowEnumerator.GetSelectedWindowTitle(index);
+		const auto& windowTitle{ windowEnumerator.GetSelectedWindowTitle(index) };
 		ui.listWidget->addItem(QString::fromStdWString(windowTitle));
 	}
 }

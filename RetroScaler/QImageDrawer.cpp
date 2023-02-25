@@ -17,8 +17,8 @@
 
 #include <QPainter>
 
-static constexpr int redrawFps = 60;
-static constexpr int redrawMs = 1000 / redrawFps;
+static constexpr int redrawFps{ 60 };
+static constexpr int redrawMs{ 1000 / redrawFps };
 
 QImageDrawer::QImageDrawer(QWidget *parent)
 	: QWidget(parent)

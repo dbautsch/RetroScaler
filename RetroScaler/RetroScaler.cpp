@@ -51,9 +51,10 @@ void RetroScaler::OnWindowSelectorTimer()
     if (windowSelectorDialog.result() == QDialog::Accepted)
     {
         selectedWindowIndex = windowSelectorDialog.GetSelectedWindowIndex();
-
-        directX11WindowCapture->StartCapture(
-            windowEnumerator.GetSelectedWindowHandle(selectedWindowIndex));
+        const auto targetWindow{ windowEnumerator.GetSelectedWindowHandle(selectedWindowIndex) };
+        mouseHandler.reset(new MouseHandler(targetWindow));
+        ui.qimageDrawer->SetMouseHandler(mouseHandler.get());
+        directX11WindowCapture->StartCapture(targetWindow);
     }
 }
 

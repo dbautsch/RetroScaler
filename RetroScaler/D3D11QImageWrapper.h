@@ -29,13 +29,9 @@ public:
 	
 	D3D11QImageWrapper() = default;
 
-	/*
-	explicit D3D11QImageWrapper(D3D11QImageWrapper&& other)
-		: constructedQImage(std::move(other.constructedQImage)),
-		scratchImage(std::move(other.scratchImage))
-	{
-	}
-	*/
+	int GetWidth() const { return width; }
+	int GetHeight() const { return height; }
+
 	const QImage& GetQImage() const
 	{
 		return constructedQImage;
@@ -44,6 +40,8 @@ public:
 private:
 	QImage constructedQImage;
 	DirectX::ScratchImage scratchImage;
+	int width{ 0 };
+	int height{ 0 };
 
 	void ConstructQImageFromScratch()
 	{
@@ -53,5 +51,8 @@ private:
 			scratchImage.GetMetadata().height,
 			QImage::Format_ARGB32
 		);
+
+		width = constructedQImage.width();
+		height = constructedQImage.height();
 	}
 };

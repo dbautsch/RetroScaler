@@ -21,6 +21,7 @@
 
 #include "ui_RetroScaler.h"
 #include "D3D11QImageWrapper.h"
+#include "MouseHandler.h"
 
 #include <memory>
 
@@ -43,7 +44,7 @@ private:
     int selectedWindowIndex{ -1 };
     WindowEnumerator windowEnumerator;
     QTimer windowSelectorTimer;
-
+    std::unique_ptr<MouseHandler> mouseHandler;
 
     void OnFrameArrived(D3D11QImageWrapper qimageWrapper);
 

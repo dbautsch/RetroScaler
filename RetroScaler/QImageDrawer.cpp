@@ -50,13 +50,72 @@ void QImageDrawer::paintEvent(QPaintEvent* event)
 	}
 
 	drawInProgress = 1;
+
+	int centerX{ 0 };
+	int centerY{ 0 };
+	int targetWidth{ qimageWrapper.GetWidth() };
+	int targetHeight{ qimageWrapper.GetHeight() };
+	const QRect clientRect = this->contentsRect();
+	int x{ 0 };
+	int y{ 0 };
+
+	if (drawingPosition == DrawingPosition::Center) [[likely]]
+	{
+		centerX = clientRect.width() / 2.0;
+		centerY = clientRect.height() / 2.0;
+	}
+
+	if (scalingMode == ScalingMode::PercentValue) [[likely]]
+	{
+		targetHeight *= scaling;
+		targetWidth *= scaling;
+	}
+	else if (scalingMode == ScalingMode::FitWindow)
+	{
+		if (targetWidth > clientRect.width())
+		{
+			double ratio{ static_cast<double>(targetWidth) / static_cast<double>(targetHeight) };
+			targetWidth = clientRect.height();
+			targetHeight = targetWidth * ratio;
+		}
+
+		if (targetHeight > clientRect.height())
+		{
+			double ratio{ static_cast<double>(targetHeight) / static_cast<double>(targetWidth) };
+			targetHeight = clientRect.height();
+			targetWidth = targetHeight * ratio;
+		}
+	}
+
 	QPainter painter(this);
-	painter.drawImage(QPoint(0, 0), qimageWrapper.GetQImage());
+	const auto brush{ Qt::black };
+	painter.fillRect(clientRect, brush);
+	auto device{ painter.device() };
+	const auto ratio{ 1.0 / device->devicePixelRatioF() };
+	const QSize targetSize{ static_cast<int>(targetWidth * ratio), static_cast<int>(targetHeight * ratio) };
+	const auto left{ centerX - ((targetWidth / 2.0) * ratio) };
+	const auto top{ centerY - ((targetHeight / 2.0) * ratio) };
+	const QPoint targetPos{ static_cast<int>(left), static_cast<int>(top) };
+	painter.drawImage(QRect(targetPos, targetSize), qimageWrapper.GetQImage());
 	painter.end();
+
 	drawInProgress = 0;
+
+	xPos = targetPos.x();
+	yPos = targetPos.y();
 }
 
 void QImageDrawer::OnSyncTimer()
 {
 	this->update();
+}
+
+void QImageDrawer::mousePressEvent(QMouseEvent* event)
+{
+	if (mouseHandler == nullptr)
+	{
+		return;
+	}
+
+	mouseHandler->SimulateClick(100, 100, MouseHandler::MouseButton::Left);
 }

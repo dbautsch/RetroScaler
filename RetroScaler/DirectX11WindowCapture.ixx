@@ -29,6 +29,9 @@ module;
 
 #include <DirectXTex.h>
 
+#include <QMutex>
+#include <QMutexLocker>
+
 #include <functional>
 
 export module DirectX11WindowCapture;
@@ -54,6 +57,7 @@ private:
 	winrt::Windows::Graphics::Capture::Direct3D11CaptureFramePool framesPool{ nullptr };
 	winrt::Windows::Graphics::Capture::GraphicsCaptureSession captureSession{ nullptr };
 	winrt::Windows::Graphics::Capture::GraphicsCaptureItem captureItem{ nullptr };
+	mutable QMutex mx;
 
 	void OnNewFrameCaptured(winrt::Windows::Graphics::Capture::Direct3D11CaptureFramePool
 		const& sender, winrt::Windows::Foundation::IInspectable const&);
@@ -116,6 +120,7 @@ void DirectX11WindowCapture::OnNewFrameCaptured(
 
 	D3D11QImageWrapper qimageWrapper(std::move(image));
 
+	QMutexLocker locker(&mx);
 	if (onFrameArrived != nullptr)
 	{
 		onFrameArrived(std::move(qimageWrapper));
@@ -124,7 +129,10 @@ void DirectX11WindowCapture::OnNewFrameCaptured(
 
 void DirectX11WindowCapture::StopCapture()
 {
-	onFrameArrived = nullptr;
+	{
+		QMutexLocker locker(&mx);
+		onFrameArrived = nullptr;
+	}
 
 	if (captureSession != nullptr)
 	{

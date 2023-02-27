@@ -65,6 +65,9 @@
     <ClCompile Include="QImageDrawer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MouseHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="WindowSelectorDialog.h">
@@ -84,6 +87,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D3D11QImageWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

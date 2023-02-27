@@ -19,27 +19,61 @@
 #include <QPaintEvent>
 #include <QAtomicInt>
 #include <QTimer>
+#include <QMouseEvent>
 
 #include "ui_QImageDrawer.h"
 
 #include "D3D11QImageWrapper.h"
+#include "MouseHandler.h"
 
-class QImageDrawer : public QWidget
+class QImageDrawer final : public QWidget
 {
 	Q_OBJECT
 
 public:
+	enum class DrawingPosition
+	{
+		Center,
+		TopLeft
+	};
+
+	enum class ScalingMode
+	{
+		NoScaling,
+		PercentValue,
+		FitWindow
+	};
+
+	enum class ScalingMethod
+	{
+		NearestNeighbor,
+		Bilinear
+	};
+
 	explicit QImageDrawer(QWidget *parent = nullptr);
 	~QImageDrawer();
+	void SetMouseHandler(MouseHandler* handler) { mouseHandler = handler; }
 
 	void SetQImageWrapper(D3D11QImageWrapper imageWrapper);
+	void SetDrawingPosition(DrawingPosition position) { drawingPosition = position; }
+	void SetScalingMode(ScalingMode mode) { scalingMode = mode; }
+	void SetScalingMethod(ScalingMethod method) { scalingMethod = method; }
+	void SetScaling(double percentage) { if (scaling > 500 || scaling < 25) { return; } scaling = percentage / 100.0; }
 
 private:
 	Ui::QImageDrawerClass ui;
 	D3D11QImageWrapper qimageWrapper;
 	QAtomicInt drawInProgress;
 	QTimer syncTimer;
+	DrawingPosition drawingPosition{ DrawingPosition::Center };
+	ScalingMode scalingMode{ ScalingMode::NoScaling };
+	ScalingMethod scalingMethod{ ScalingMethod::NearestNeighbor };
+	double scaling{ 1.0 };
+	int xPos{ 0 };
+	int yPos{ 0 };
+	MouseHandler * mouseHandler{ nullptr };
 
 	void paintEvent(QPaintEvent* event) override;
+	void mousePressEvent(QMouseEvent* event) override;
 	void OnSyncTimer();
 };

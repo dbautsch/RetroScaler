@@ -60,8 +60,9 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)dependencies\DirectXTex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>windowsapp.lib;$(SolutionDir)$(Platform)\$(Configuration)\DirectXTex.lib;d3d11.lib;d3dcompiler.lib;dxgi.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -69,7 +70,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)dependencies\DirectXTex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -106,6 +107,7 @@
     <ClCompile Include="DirectX11WindowCapture.ixx">
       <FileType>Document</FileType>
     </ClCompile>
+    <ClCompile Include="MouseHandler.cpp" />
     <ClCompile Include="QImageDrawer.cpp" />
     <ClCompile Include="WindowEnumerator.ixx" />
     <ClCompile Include="WindowSelectorDialog.cpp" />
@@ -124,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D3D11QImageWrapper.h" />
+    <ClInclude Include="MouseHandler.h" />
     <QtMoc Include="QImageDrawer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
